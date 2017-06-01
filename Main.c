@@ -39,7 +39,6 @@ int main(void){
 	userLL->next = NULL;
 
 	student_t* studentsLL;
-
 	studentsLL = (student_t*) malloc(sizeof(student_t));
 	if (studentsLL == NULL){
 		printf("Memory error.\n");
@@ -85,16 +84,19 @@ int main(void){
 						case 6 : 
 							allocateStudent(selectedSubject, studentsLL);
 							break;
-						case 7 :
+						case 7 : 
+							removeStudent(selectedSubject);
+							break;
+						case 8 :
 							markSession(selectedSubject->studentsLL, selectSession(selectedSubject->sessions, selectedSubject->sessionsAmt));	
 							break;	
-						case 8 :
+						case 9 :
 							printStudents(selectedSubject->studentsLL);				
 							break;	
-						case 9 :
+						case 10 :
 							printUsersByID(userLL, selectedSubject->userID, selectedSubject->usersAmt);			
 							break;
-						case 10 :
+						case 11 :
 							printUsersBySession(studentsLL, selectSession(selectedSubject->sessions, selectedSubject->sessionsAmt));			
 							break;
 						default :
@@ -189,10 +191,11 @@ void printSubjectMenu(void){
 	"4. Allocate tutor\n"
 	"5. Remove tutor\n"
 	"6. Allocate student\n"
-	"7. Mark attendance\n"
-	"8. View students\n"
-	"9. View tutors\n"
-	"10. View attendance\n"
+	"7. Remove student\n"
+	"8. Mark attendance\n"
+	"9. View students\n"
+	"10. View tutors\n"
+	"11. View attendance\n"
 	"Enter your choice>");
 }
 
@@ -654,25 +657,35 @@ long concatenate(long x, long y) {
 }
 
 void allocateStudent(subject_t* subject, student_t* studentsLL){
+
 	student_t* ip = subject->studentsLL;
 	student_t* student = selectStudent(studentsLL);
 
 	if(student != NULL){
-		if(ip == NULL){
-			subject->studentsLL = student;
-			printf("First student added\n");
-		}else{
-			while(ip->next != NULL){
-				if(ip->ID == student->ID){
-					printf("Student already allocated\n");
-					return;
-				}
-				ip = ip->next;
+		while (ip->next != NULL){
+			if(ip->ID == student->ID){
+				printf("Student already allocated\n");
+				return;
 			}
-			ip->next = student;
-			printf("Student added\n");
+			ip = ip->next;
 		}
+
+		ip->ID = student->ID;
+		strcpy(ip->name, student->name);
+		ip->attendanceAmt = student->attendanceAmt;
+
+		ip->next = (student_t*) malloc(sizeof(student_t));
+		if (ip == NULL)
+		{
+			printf("Memory error.\n");
+			return;
+		}
+
+		ip = ip->next;
+		ip->next = NULL;
 	}
+
+	printf("Student added\n");
 }
 
 void printStudentSubjects(subject_t* subjectsLL, int ID){
@@ -723,7 +736,34 @@ void markSession(student_t* studentsLL, long session){
 	}
 }
 
+void removeStudent(subject_t* subject){
+	student_t* student  = selectStudent(subject->studentsLL);
+	student_t* ip = subject->studentsLL;
+	student_t* temp;
 
+	if(student != NULL){
+		while(ip != NULL && ip->next != NULL){
+			if(ip->ID == student->ID){
+				if(ip->next == NULL){
+					subject->studentsLL = NULL;
+				}else{
+					subject->studentsLL = ip->next;
+					free(ip);
+				}
+			}else if(ip->next->ID == student->ID){
+				temp = ip->next->next;
+				free(ip->next);
+				if(temp != NULL){
+					ip->next = temp;
+				}else{
+					ip->next = NULL;
+				}
+				return;
+			}
+			ip = ip->next;
+		}
+	}
+}
 
 
 

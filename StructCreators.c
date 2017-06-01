@@ -95,6 +95,11 @@ int CreateSubject(subject_t* subjectLL)
 
   ip->usersAmt = 0; /* for now */
 
+  ip->studentsLL = (student_t*) malloc(sizeof(student_t));
+  if (ip->studentsLL == NULL){
+    printf("Memory error.\n");
+    return 1;
+  }
 
   ip->next = (subject_t*) malloc(sizeof(subject_t));
   if (ip == NULL)
