@@ -88,5 +88,6 @@ void allocateStudent(subject_t* subject, student_t* studentsLL);
 void printStudentSubjects(subject_t* subjectsLL, int ID);
 void markSession(student_t* studentsLL, long session);
 void printUsersBySession(student_t* student, long session);
+void removeStudent(subject_t* subject);
 
 #endif
