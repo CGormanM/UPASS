@@ -38,7 +38,9 @@ do
 
   } while ( strcmp(passwordTest, ip->password) != 0);
 
-  printf("Enter user privilege: ");
+
+  printf( "Privilege: 1- Admin, 2- Leader, 3- Observer \n"
+          "Enter user privilege: ");
   scanf("%d", &ip->privilege);
 
 

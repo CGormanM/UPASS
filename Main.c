@@ -86,7 +86,7 @@ int main(void){
 							allocateStudent(selectedSubject, studentsLL);
 							break;
 						case 7 :
-							markSession(studentsLL, selectSession(selectedSubject->sessions, selectedSubject->sessionsAmt));	
+							markSession(selectedSubject->studentsLL, selectSession(selectedSubject->sessions, selectedSubject->sessionsAmt));	
 							break;	
 						case 8 :
 							printStudents(selectedSubject->studentsLL);				
@@ -254,7 +254,7 @@ subject_t* selectSubject(subject_t* root){
 		scanf("%d", &tempID);
 	}
 
-	while( ip->next != NULL){
+	while( ip != NULL && ip->next != NULL){
 		if(ip->ID == tempID){
 
 			#ifdef DEBUG
@@ -330,7 +330,7 @@ user_t* selectUser(user_t* root){
 		scanf("%d", &tempID);
 	}
 
-	while( ip->next != NULL){
+	while( ip != NULL && ip->next != NULL){
 		if(ip->ID == tempID){
 			return ip;
 		}
@@ -364,7 +364,7 @@ student_t* selectStudent(student_t* root){
 		scanf("%d", &tempID);
 	}
 
-	while( ip->next != NULL){
+	while( ip != NULL && ip->next != NULL){
 		if(ip->ID == tempID){
 			return ip;
 		}
@@ -533,7 +533,7 @@ void addSession(subject_t* subject){
 		#ifdef DEBUG
 		printf("Day: %d\n"
 			"Month: %d\n"
-			"Month: %d\n", day, month, year);
+			"Year: %d\n", day, month, year);
 		#endif
 		if(	day < 1 || day > 31 ||
 			month < 1 || month > 12 ||
@@ -683,7 +683,7 @@ void printStudentSubjects(subject_t* subjectsLL, int ID){
 	printf(	"  ID   | Name\n"
 			"------ | ----\n");
 
-	while(subip->next != NULL){
+	while(subip != NULL && subip->next != NULL){
 		stuip = subip->studentsLL;
 		if(subip != NULL){
 			while(stuip->next != NULL){
@@ -699,15 +699,26 @@ void printStudentSubjects(subject_t* subjectsLL, int ID){
 }
 
 void markSession(student_t* studentsLL, long session){
-	int repeat = 1;
+	int i, repeat = 1;
 
 	if(session != -1){
 		while(repeat == 1){
 			student_t* student = selectStudent(studentsLL);
-			student->attendance[student->attendanceAmt] = session;
-			student->attendanceAmt++;
-			printf("Enter 0 to quit or 1 to continue: ");
-			scanf("%d", &repeat);
+			if(student != NULL){
+				for(i = 0; i < student->attendanceAmt; i++){
+					if(student->attendance[i] == session){
+						printf("Student already marked");
+						return;
+					}
+				}
+				student->attendance[student->attendanceAmt] = session;
+				student->attendanceAmt++;
+				printf("Enter 0 to return to menu or\n"
+						"1 to add another student: ");
+				scanf("%d", &repeat);
+			}else{
+				repeat = 0;
+			}
 		}
 	}
 }
