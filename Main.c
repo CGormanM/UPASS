@@ -1,5 +1,6 @@
 #include "UPASS.h"
 #include "StructCreators.c"
+#include "ReadingandWritingDatabase_c.c"
 
 /*******************************************************************************
 TODO
@@ -22,13 +23,15 @@ int main(void){
 	user_t* selectedUser;
 	student_t* selectedStudent;
 
-	subject_t* subjectLL;
-	subjectLL = (subject_t*)malloc(sizeof(subject_t));
+	subject_t* subjectLL ;
+	subjectLL = (subject_t*) malloc(sizeof(subject_t));
 	if (subjectLL == NULL){
 		printf("Memory error.\n");
-		return 1;
+		return 0;
 	}
 	subjectLL->next = NULL;
+
+	createSubjects(subjectLL);
 
 	user_t* userLL;
 	userLL = (user_t*) malloc(sizeof(user_t));
@@ -38,6 +41,8 @@ int main(void){
 	}
 	userLL->next = NULL;
 
+
+
 	student_t* studentsLL;
 	studentsLL = (student_t*) malloc(sizeof(student_t));
 	if (studentsLL == NULL){
@@ -45,6 +50,8 @@ int main(void){
 		return 0;
 	}
 	studentsLL->next = NULL;
+
+	createStudents(studentsLL);
 
 	while(choice != 0){
 		printBaseMenu();
@@ -139,8 +146,9 @@ int main(void){
 					}
 				}		
 				break;
-			case 0 :
-				printf("Exiting\n");		
+			case 0 :	
+				saveStudents(studentsLL);
+				saveSubjects(subjectLL);	
 				break;
 			default : 
 				printf("Invalid input \n");

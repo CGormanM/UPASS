@@ -19,12 +19,17 @@ Preprocessing directives
 /*50 Leaders + 10 Office Staff*/
 #define MAX_USERS 60
 
+#define USER_DATABASE "ProgramUsers"
+#define STUDENT_DATABASE "enrolment"
+#define SUBJECT_DATABASE "subjects"
+#define NEW_STUDENT_CSV "students"
+
 /*#define DEBUG*/
 
 /*******************************************************************************
 List structs
 *******************************************************************************/
-/*ID Format - 1[StudentID]*/
+/*ID Format - [StudentID]*/
 struct student{
   int ID;
   char name[MAX_NAME_LENGTH];
@@ -36,7 +41,7 @@ struct student{
 typedef struct student student_t;
 
 
-/*ID Format - 2[UserID]*/
+/*ID Format - [UserID]*/
 struct user{
   int ID;
   char name[MAX_NAME_LENGTH];
@@ -46,13 +51,13 @@ struct user{
 };
 typedef struct user user_t;
 
-/*ID Format - 4[SubjectID][Semester][Year]*/
+/*ID Format - [SubjectID][Semester][Year]*/
 struct subject{
   int ID;
-  int sessionsAmt;
-  int usersAmt;
   char name[MAX_NAME_LENGTH];
-  long sessions[MAX_SESSIONS]; /*ID Format - 3[SubjectID][Date][Time]*/
+  int sessionsAmt;
+  long sessions[MAX_SESSIONS];
+  int usersAmt;
   int userID[MAX_USERS];
   student_t* studentsLL;
   struct subject* next;
@@ -89,5 +94,10 @@ void printStudentSubjects(subject_t* subjectsLL, int ID);
 void markSession(student_t* studentsLL, student_t* studentsDB, long session);
 void printStudentsBySession(student_t* student, long session);
 void removeStudent(subject_t* subject);
+
+void createStudents(student_t* root);
+void saveStudents(student_t* root);
+void saveSubjects(subject_t* root);
+void createSubjects(subject_t* root);
 
 #endif

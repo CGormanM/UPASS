@@ -1,5 +1,8 @@
 #include "UPASS.h"
 
+#ifndef _STRUCT_CREATORS_
+#define _STRUCT_CREATORS_
+
 int CreateUser(user_t* userLL)
 {
   user_t* ip;
@@ -85,7 +88,7 @@ int CreateSubject(subject_t* subjectLL)
   */
 
   /* Take in data */
-  printf( "Enter -1 to cancel or"
+  printf( "Enter -1 to cancel or\n"
           "Please enter subject ID: ");
   scanf("%d", &ip->ID);
   if(ip->ID == -1){
@@ -205,3 +208,5 @@ int CreateStudent(student_t* studentLL)
 
   return 0;
 }
+
+#endif
