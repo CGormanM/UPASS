@@ -88,7 +88,7 @@ int main(void){
 							removeStudent(selectedSubject);
 							break;
 						case 8 :
-							markSession(selectedSubject->studentsLL, selectSession(selectedSubject->sessions, selectedSubject->sessionsAmt));	
+							markSession(selectedSubject->studentsLL, studentsLL, selectSession(selectedSubject->sessions, selectedSubject->sessionsAmt));	
 							break;	
 						case 9 :
 							printStudents(selectedSubject->studentsLL);				
@@ -97,7 +97,7 @@ int main(void){
 							printUsersByID(userLL, selectedSubject->userID, selectedSubject->usersAmt);			
 							break;
 						case 11 :
-							printUsersBySession(studentsLL, selectSession(selectedSubject->sessions, selectedSubject->sessionsAmt));			
+							printStudentsBySession(selectedSubject->studentsLL, selectSession(selectedSubject->sessions, selectedSubject->sessionsAmt));			
 							break;
 						default :
 							printf("Invalid input \n");			
@@ -238,16 +238,18 @@ selectSubject
 This function prompts the user to input a subject ID, giving the option to print
 basic information for all subject structs (from the provided linked list)
 inlcuding their ID's if the user is unaware of the ID. The function then returns
-the selected ID.
+a student struct that contains the selected ID or returns a null pointer and 
+prints an error message if no struct exists in the list provided.
 inputs:
 - Root node of a subject struct linked list
 outputs:
-- Subject ID as an int
+- Subject struct
 *******************************************************************************/
 subject_t* selectSubject(subject_t* root){
 	int tempID;
 	subject_t* ip = root;
 	printf("\n\n"
+		"Enter -1 to cancel, \n"
 		"Enter 0 to display subject IDs or\n"
 		"Enter subject ID: ");
 	scanf("%d", &tempID);
@@ -278,18 +280,19 @@ subject_t* selectSubject(subject_t* root){
 /*******************************************************************************
 selectSession
 This function prompts the user to input a session ID, giving the option to print
-basic information for all session structs (from the provided linked list)
-inlcuding their ID's if the user is unaware of the ID. The function then returns
-the selected ID.
+basic information for all session IDs (from the provided array)
+inlcuding their full ID's if the user is unaware of the ID. The function then 
+returns the selected ID or negative 1 if no session ID can be returned.
 inputs:
-- Root node of a session struct linked list
+- Array of session IDs, amount of IDs in the array as an int
 outputs:
-- Subject ID as an int
+- Session ID as an int
 *****************************************************************************/
 long selectSession(long sessions[], int sessionsAmt){
 	int i;
 	long tempID;
 	printf("\n\n"
+		"Enter -1 to cancel, \n"
 		"Enter 0 to display session IDs or\n"
 		"Enter session ID: ");
 		scanf("%ld", &tempID);
@@ -313,17 +316,19 @@ selectUser
 This function prompts the user to input a user ID, giving the option to print
 basic information for all user structs (from the provided linked list)
 inlcuding their ID's if the user is unaware of the ID. The function then returns
-the selected ID.
+a user struct that contains the selected ID or returns a null pointer and 
+prints an error message if no struct exists in the list provided.
 inputs:
-- Root node of a session struct linked list
+- Root node of a user struct linked list
 outputs:
-- Subject ID as an int
+- User struct
 *******************************************************************************/
 user_t* selectUser(user_t* root){
 	int tempID;
 	user_t* ip = root;
 
 	printf("\n\n"
+		"Enter -1 to cancel, \n"
 		"Enter 0 to display user IDs or\n"
 		"Enter user ID: ");
 	scanf("%d", &tempID);
@@ -348,16 +353,18 @@ selectStudent
 This function prompts the user to input a student ID, giving the option to print
 basic information for all student structs (from the provided linked list)
 inlcuding their ID's if the user is unaware of the ID. The function then returns
-the selected ID.
+a student struct that contains the selected ID or returns a null pointer and 
+prints an error message if no struct exists in the list provided.
 inputs:
 - Root node of a student struct linked list
 outputs:
-- Subject ID as an int
+- Student struct
 *******************************************************************************/
 student_t* selectStudent(student_t* root){
 	int tempID;
 	student_t* ip = root;
 	printf("\n\n"
+		"Enter -1 to cancel, \n"
 		"Enter 0 to display student IDs or\n"
 		"Enter student ID: ");
 	scanf("%d", &tempID);
@@ -377,10 +384,19 @@ student_t* selectStudent(student_t* root){
 	return NULL;
 };
 
-/*
-*  ID   | Name
-*------ | ----
-*/
+/*******************************************************************************
+printSubjects
+This function prints the name and ID of all subjects in a provided linked list.
+The information is printed in the following format
+
+  ID   | Name
+------ | ----
+
+inputs:
+- Root node of a subject linked list 
+outputs:
+- none
+*******************************************************************************/
 void printSubjects(subject_t* root){
 	subject_t* ip = root;
 	printf(	"  ID   | Name\n"
@@ -392,11 +408,26 @@ void printSubjects(subject_t* root){
 	printf("\n\n");
 }
 
-/*ID Format - 3[SubjectID][Date][Time] - 97116798 12 07 96 12 10*/
-/*
-*  ID   |   Date   | Time
-*------ | dd/mm/yy | --:--
-*/
+/*******************************************************************************
+printSessions
+This function prints the subject ID, date, time and full ID of all sessions
+in a provided array. The array extrcts information from the full ID where 
+information is stored as follows. 
+
+[SubjectID][Date][Time]
+
+Additionally if a date or time value contains single digit it is prefaced with 
+a 9 which is removed to display the correct time.
+The information is printed in the following format
+
+ Sub ID  |   Date   | Time  |     ID
+-------- | dd/mm/yy | --:-- | ----------	
+
+inputs:
+- Array of session IDs, amount of IDs in the array as an int
+outputs:
+- none
+*******************************************************************************/
 void printSessions(long sessions[], int sessionsAmt){
 	int i, ID, day, month, year, hours, minutes;
 	long temp;
@@ -444,11 +475,20 @@ void printSessions(long sessions[], int sessionsAmt){
 	printf("\n\n");
 }
 
+/*******************************************************************************
+printUsers
+This function prints the name, privilege and ID of all users in a provided
+linked list.
+The information is printed in the following format
 
-/*
-*   ID    | Privilege | Name
-*-------- |     -     | ----
-*/
+   ID    | Privilege | Name
+-------- |     -     | ----
+
+inputs:
+- Root node of a user linked list 
+outputs:
+- none
+*******************************************************************************/
 void printUsers(user_t* root){
 	user_t* ip = root;
 	printf(	"   ID    | Privilege | Name\n"
@@ -461,10 +501,19 @@ void printUsers(user_t* root){
 	printf("\n\n");
 }
 
-/*
-*  ID   | Name
-*------ | ----
-*/
+/*******************************************************************************
+printStudents
+This function prints the name and ID of all students in a provided linked list.
+The information is printed in the following format
+
+  ID   | Name
+------ | ----
+
+inputs:
+- Root node of a student linked list 
+outputs:
+- none
+*******************************************************************************/
 void printStudents(student_t* root){
 	student_t* ip = root;
 	printf(	"   ID    | Name\n"
@@ -476,6 +525,21 @@ void printStudents(student_t* root){
 	printf("\n\n");
 }
 
+/*******************************************************************************
+printUsersByID
+This function prints the name, privilege and ID of all users from a linked list
+whose IDs match those in a provided array.
+The information is printed in the following format
+
+   ID    | Privilege | Name
+-------- |     -     | ----
+
+inputs:
+- Root node of a user linked list, an array of IDs, the amount of IDs in the
+array as an int
+outputs:
+- none
+*******************************************************************************/
 void printUsersByID(user_t* root, int IDs[], int IDamt){
 	int i;
 	user_t* ip = root;
@@ -492,6 +556,20 @@ void printUsersByID(user_t* root, int IDs[], int IDamt){
 	printf("\n\n");
 }
 
+/*******************************************************************************
+printUserSubjects
+This function prints the name and ID of all subjects from a provided linked list, 
+whose userID array contains a provided ID.
+The information is printed in the following format
+
+  ID   | Name
+------ | ----
+
+inputs:
+- Root node of a subject linked list, the ID to compare as an int
+outputs:
+- none
+*******************************************************************************/
 void printUserSubjects(subject_t* root, int userID){
 	subject_t* ip = root;
 	int i;
@@ -509,7 +587,58 @@ void printUserSubjects(subject_t* root, int userID){
 	printf("\n\n");
 }
 
-void printUsersBySession(student_t* student, long session){
+/*******************************************************************************
+printUserSubjects
+This function prints the name and ID of all subjects from a provided linked list, 
+whose student linked list contains a provided ID.
+The information is printed in the following format
+
+  ID   | Name
+------ | ----
+
+inputs:
+- Root node of a subject linked list, the ID to compare as an int
+outputs:
+- none
+*******************************************************************************/
+void printStudentSubjects(subject_t* subjectsLL, int ID){
+
+	subject_t* subip = subjectsLL;
+	student_t* stuip;
+
+	printf(	"  ID   | Name\n"
+			"------ | ----\n");
+
+	while(subip != NULL && subip->next != NULL){
+		stuip = subip->studentsLL;
+		if(subip != NULL){
+			while(stuip->next != NULL){
+				if(stuip->ID == ID){
+	    			printf("%6d | %s\n", subip->ID, subip->name);
+				}
+				stuip = stuip->next;
+			}
+		subip = subip->next;	
+		}
+
+	}
+}
+
+/*******************************************************************************
+printStudentsBySession
+This function prints the name and ID of all students form a provided linked list,
+whose attendance array contains a provided session ID.
+The information is printed in the following format
+
+  ID   | Name
+------ | ----
+
+inputs:
+- Root node of a student linked list, the ID to compare as a long
+outputs:
+- none
+*******************************************************************************/
+void printStudentsBySession(student_t* student, long session){
 	student_t* ip = student;
 	int i;
 
@@ -520,12 +649,28 @@ void printUsersBySession(student_t* student, long session){
 			if(ip->attendance[i] == session){
 				printf("%8d | %s\n", ip->ID, ip->name);
 			}
-			ip = ip->next;
 		}
+		ip = ip->next;
 	}
 }
 
+/*******************************************************************************
+addSession
+This function prompts the user for all information required to create a session
+ID. The function then concatenates all information in the following format.
 
+[SubjectID][Date][Time]
+
+If a single digit is provided for any variable that should be two digits the 
+function encodes the first 0 with a 9 that will be removed when printing. 
+i.e. 05 = 95
+The function then stores the ID in the session array within a provided subject
+struct.
+inputs:
+- The subject struct to be modified
+outputs:
+- none
+*******************************************************************************/
 void addSession(subject_t* subject){
 	int day = 0, month = 0, year = 0, hours = -1, minutes = -1;
 	long ID;
@@ -540,7 +685,7 @@ void addSession(subject_t* subject){
 		#endif
 		if(	day < 1 || day > 31 ||
 			month < 1 || month > 12 ||
-			year < 1 || year > 17){
+			year < 1 || year > 20){
 				printf("Invalid date \n");
 				day = 0;
 				month = 0;
@@ -591,6 +736,16 @@ void addSession(subject_t* subject){
 	subject->sessionsAmt++;
 }
 
+/*******************************************************************************
+removeSession
+This function searches through a subjects session array for a session ID
+provided by the user. If the function finds the ID it removes it from the array
+if it's not found an error message is printed
+inputs:
+- The subject struct to be modified
+outputs:
+- none
+*******************************************************************************/
 void removeSession(subject_t* subject){
 	int i, j;
 	long ID;
@@ -608,6 +763,15 @@ void removeSession(subject_t* subject){
 	printf("Session doesn't exist");
 }
 
+/*******************************************************************************
+updatePrivilege
+The function changes a user struct's privilege value to an int provided by the
+user.
+inputs:
+- The user struct to be modified
+outputs:
+- none
+*******************************************************************************/
 void updatePrivilege(user_t* user){
 	int newPrivilege;
 	printf("Enter new privilege: ");
@@ -615,6 +779,16 @@ void updatePrivilege(user_t* user){
 	user->privilege = newPrivilege;
 }
 
+/*******************************************************************************
+allocateTutor
+This function prompts the user to select a user struct. The struct's ID is then
+added to the user ID array within a provided subject struct.
+inputs:
+- The subject struct to be modified, a list of possible users to be added as a
+root node of a linked list
+outputs:
+- none
+*******************************************************************************/
 void allocateTutor(subject_t* subject, user_t* usersLL){
 	user_t* user = selectUser(usersLL);
 	int i;
@@ -630,6 +804,17 @@ void allocateTutor(subject_t* subject, user_t* usersLL){
 	}	
 }
 
+/*******************************************************************************
+printBaseMenu
+This prompts the user for a user ID, then searches through a user ID array from
+a provided subject struct comapring IDs to the selected ID. If the ID matches
+it is removed otherwise an error message is printed 
+inputs:
+- The subject struct to be modified, all user information as a root node of a
+ linked list
+outputs:
+- none
+*******************************************************************************/
 void removeTutor(subject_t* subject, user_t* users){
 	int i, j, ID;
 	printUsersByID(users, subject->userID, subject->usersAmt);
@@ -648,6 +833,14 @@ void removeTutor(subject_t* subject, user_t* users){
 	printf("User isn't allocated");
 }
 
+/*******************************************************************************
+concatenate
+This function concatenates two longs
+inputs:
+- The two longs to be concatenated
+outputs:
+- none
+*******************************************************************************/
 /*TODO - Check if this is plagiarism*/
 long concatenate(long x, long y) {
     long pow = 10;
@@ -656,6 +849,16 @@ long concatenate(long x, long y) {
     return x * pow + y;        
 }
 
+/*******************************************************************************
+allocateStudent
+This function prompts the user to select a student struct. The struct is then 
+added to a student linked list within a provided subject struct
+inputs:
+- The subject struct to be modified, student struct information as the root
+node of a linked list
+outputs:
+- none
+*******************************************************************************/
 void allocateStudent(subject_t* subject, student_t* studentsLL){
 
 	student_t* ip = subject->studentsLL;
@@ -688,54 +891,15 @@ void allocateStudent(subject_t* subject, student_t* studentsLL){
 	printf("Student added\n");
 }
 
-void printStudentSubjects(subject_t* subjectsLL, int ID){
-
-	subject_t* subip = subjectsLL;
-	student_t* stuip;
-
-	printf(	"  ID   | Name\n"
-			"------ | ----\n");
-
-	while(subip != NULL && subip->next != NULL){
-		stuip = subip->studentsLL;
-		if(subip != NULL){
-			while(stuip->next != NULL){
-				if(stuip->ID == ID){
-	    			printf("%6d | %s\n", subip->ID, subip->name);
-				}
-				stuip = stuip->next;
-			}
-		subip = subip->next;	
-		}
-
-	}
-}
-
-void markSession(student_t* studentsLL, long session){
-	int i, repeat = 1;
-
-	if(session != -1){
-		while(repeat == 1){
-			student_t* student = selectStudent(studentsLL);
-			if(student != NULL){
-				for(i = 0; i < student->attendanceAmt; i++){
-					if(student->attendance[i] == session){
-						printf("Student already marked");
-						return;
-					}
-				}
-				student->attendance[student->attendanceAmt] = session;
-				student->attendanceAmt++;
-				printf("Enter 0 to return to menu or\n"
-						"1 to add another student: ");
-				scanf("%d", &repeat);
-			}else{
-				repeat = 0;
-			}
-		}
-	}
-}
-
+/*******************************************************************************
+removeStudent
+This function prompts the user to select a student. The student is then removed
+from the linked list within the provided subject struct.
+inputs:
+- The subject struct to be modified
+outputs:
+- none
+*******************************************************************************/
 void removeStudent(subject_t* subject){
 	student_t* student  = selectStudent(subject->studentsLL);
 	student_t* ip = subject->studentsLL;
@@ -764,6 +928,59 @@ void removeStudent(subject_t* subject){
 		}
 	}
 }
+
+/*******************************************************************************
+markSession
+This function prompts the user to select a student and a session. The student
+then has a provided session ID added to its attendance array. The function then updates
+the matching student struct from the database.
+inputs:
+- The student database as a root of a linked list, the student struct to be 
+modified, the session ID to be added
+outputs:
+- none
+*******************************************************************************/
+void markSession(student_t* studentsLL, student_t* studentsDB, long session){
+	int i, repeat = 1;
+	student_t* ip = studentsDB;
+
+	if(session != -1){
+		while(repeat == 1){
+			student_t* student = selectStudent(studentsLL);
+			if(student != NULL){
+				for(i = 0; i < student->attendanceAmt; i++){
+					if(student->attendance[i] == session){
+						printf("Student already marked");
+						return;
+					}
+				}
+				student->attendance[student->attendanceAmt] = session;
+				student->attendanceAmt++;
+				while(ip->next != NULL){
+					if(ip->ID == student->ID){
+						ip->attendance[ip->attendanceAmt] = session;
+						ip->attendanceAmt++;
+						#ifdef DEBUG
+						printf("Session %ld\n"
+								"Student Session %ld\n"
+								"Ip Session %ld\n"
+								"attendanceAmt %d\n"
+							, session, student->attendance[student->attendanceAmt-1], ip->attendance[ip->attendanceAmt-1], ip->attendanceAmt);
+						#endif
+					}
+					ip = ip->next;
+				}
+				printf("Enter 0 to return to menu or\n"
+						"1 to add another student: ");
+				scanf("%d", &repeat);
+			}else{
+				repeat = 0;
+			}
+		}
+	}
+}
+
+
 
 
 

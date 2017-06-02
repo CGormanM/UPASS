@@ -19,7 +19,7 @@ Preprocessing directives
 /*50 Leaders + 10 Office Staff*/
 #define MAX_USERS 60
 
-#define DEBUG
+/*#define DEBUG*/
 
 /*******************************************************************************
 List structs
@@ -86,8 +86,8 @@ void printUsersByID(user_t* root, int IDs[], int IDamt);
 void printUserSubjects(subject_t* root, int userID);
 void allocateStudent(subject_t* subject, student_t* studentsLL);
 void printStudentSubjects(subject_t* subjectsLL, int ID);
-void markSession(student_t* studentsLL, long session);
-void printUsersBySession(student_t* student, long session);
+void markSession(student_t* studentsLL, student_t* studentsDB, long session);
+void printStudentsBySession(student_t* student, long session);
 void removeStudent(subject_t* subject);
 
 #endif
