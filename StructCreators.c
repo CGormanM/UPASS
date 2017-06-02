@@ -85,8 +85,12 @@ int CreateSubject(subject_t* subjectLL)
   */
 
   /* Take in data */
-  printf("Please enter subject ID: ");
+  printf( "Enter -1 to cancel or\n"
+          "Please enter subject ID: ");
   scanf("%d", &ip->ID);
+  if(ip->ID == -1){
+    return 1;
+  }
 
   printf("Enter subject name: ");
   scanf("%s", ip->name);
@@ -139,8 +143,13 @@ int CreateStudent(student_t* studentLL)
   Find the last entry of the linked list, so as to add to the end of the list
   */
 
-  printf("Enter student ID: ");
+  printf(
+    "Enter -1 to cancel or\n"
+    "Enter student ID: ");
   scanf("%d", &enteredID);
+  if(enteredID == -1){
+    return 1;
+  }
 
   printf("Enter student name: ");
   scanf("%s", enteredName);
