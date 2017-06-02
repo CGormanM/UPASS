@@ -85,7 +85,7 @@ int CreateSubject(subject_t* subjectLL)
   */
 
   /* Take in data */
-  printf( "Enter -1 to cancel or\n"
+  printf( "Enter -1 to cancel or"
           "Please enter subject ID: ");
   scanf("%d", &ip->ID);
   if(ip->ID == -1){
