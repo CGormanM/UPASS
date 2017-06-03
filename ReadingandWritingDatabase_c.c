@@ -1,11 +1,6 @@
 #include "UPASS.h"
 #include "StructCreators.c"
 
-
-
-#ifndef _USER_T_
-#define _USER_T_
-
 void saveStudents(student_t* root){
 	student_t* ip = root;
 	int i;
@@ -219,5 +214,3 @@ void createSubjects(subject_t* root){
 
     fclose(database);
 }
-
-#endif

@@ -1,6 +1,7 @@
 #include "UPASS.h"
 #include "StructCreators.c"
 #include "ReadingandWritingDatabase_c.c"
+#include "login.c"
 
 /*******************************************************************************
 TODO
@@ -16,6 +17,7 @@ TODO
 Main
 *******************************************************************************/
 int main(void){
+	login();
 	int choice = -1;
 
 	user_t* currentUser;
@@ -31,8 +33,6 @@ int main(void){
 	}
 	subjectLL->next = NULL;
 
-	createSubjects(subjectLL);
-
 	user_t* userLL;
 	userLL = (user_t*) malloc(sizeof(user_t));
 	if (userLL == NULL){
@@ -40,8 +40,6 @@ int main(void){
 		return 0;
 	}
 	userLL->next = NULL;
-
-
 
 	student_t* studentsLL;
 	studentsLL = (student_t*) malloc(sizeof(student_t));

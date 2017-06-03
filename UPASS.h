@@ -19,10 +19,12 @@ Preprocessing directives
 /*50 Leaders + 10 Office Staff*/
 #define MAX_USERS 60
 
-#define USER_DATABASE "ProgramUsers"
-#define STUDENT_DATABASE "enrolment"
-#define SUBJECT_DATABASE "subjects"
-#define NEW_STUDENT_CSV "students"
+#define USER_DATABASE "ProgramUsers.txt"
+#define STUDENT_DATABASE "enrolment.txt"
+#define SUBJECT_DATABASE "subjects.txt"
+#define NEW_STUDENT_CSV "students.txt"
+
+#define DEBUG
 
 /*#define DEBUG*/
 
