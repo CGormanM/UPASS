@@ -1,11 +1,10 @@
 #include "UPASS.h"
 
 /*
-Return -1 if no database. Return 1 if their entered ID and password
-match up to those in the database. Return 0 if either the ID or the
-password is not correct.
+Return -1 if no database.
+Return 1 if their entered ID and password match up to a pair in the database.
+Return 0 if either the ID or the password is not correct.
 */
-
 
 int readUserDatabase(int userID, char cipherPassword[])
 {
@@ -42,7 +41,7 @@ int readUserDatabase(int userID, char cipherPassword[])
     i++;
     printf("Reading database.\n Cycle %d\nID is: %d\n", i, IDcomparison);
     printf("Password is: %s\n", passwordComparison);
-    printf("privilege is: %d\n", testPriv);
+    /* printf("privilege is: %d\n", testPriv);*/
     #endif
 
 
@@ -60,7 +59,6 @@ int readUserDatabase(int userID, char cipherPassword[])
          "Password entered into the function: %s\n",
           passwordComparison, cipherPassword);
   #endif
-
 if ( (strcmp(cipherPassword, passwordComparison) == 0)
       && (userID == IDcomparison)  )
 {
@@ -75,4 +73,3 @@ if ( (strcmp(cipherPassword, passwordComparison) == 0)
 
   /* Program should not reach this stage */
 }
-

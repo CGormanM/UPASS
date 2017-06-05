@@ -3,72 +3,13 @@
 #ifndef _STRUCT_CREATORS_
 #define _STRUCT_CREATORS_
 
-int CreateUser(user_t* userLL)
-{
-  user_t* ip;
-  char passwordTest[MAX_PASSWORD_LENGTH];
+int createSubject(subject_t* subjectLL, int privilege){
 
-  ip = userLL;
-
-
-  while (ip->next != NULL)
-  {
-    ip = ip->next;
+  if(privilege > 2){
+    printf("You do not have privileges for this function, speak ");
+    printf("to your admin\n");
+    return -1;
   }
-  /*
-  Finds the last element in the LL
-  */
-
-  printf("Enter user ID: ");
-  scanf("%d", &ip->ID);
-
-  printf("Enter user name: ");
-  scanf("%s", ip->name);
-
-do
-  {
-
-    printf("Enter password: ");
-    scanf("%s", ip->password);
-
-    printf("Enter password again: ");
-    scanf("%s", passwordTest);
-
-    if( strcmp(passwordTest, ip->password) != 0)
-    {
-      printf("Passwords don't match. Please enter again.\n");
-    }
-
-  } while ( strcmp(passwordTest, ip->password) != 0);
-
-
-  printf( "Privilege: 1- Admin, 2- Leader, 3- Observer \n"
-          "Enter user privilege: ");
-  scanf("%d", &ip->privilege);
-
-
-  ip->next = (user_t*) malloc(sizeof(user_t));
-  if (ip == NULL)
-  {
-    printf("Memory error.\n");
-    return 1;
-  }
-  /*
-  Creates the next node in the linked list
-  */
-
-  ip = ip->next;
-  ip->next = NULL;
-  /*
-  Sets the new end node's pointer equal to NULL in order to find the last
-  node, as in my while-loop above.
-  */
-
-  return 0;
-}
-
-int CreateSubject(subject_t* subjectLL)
-{
   subject_t* ip;
   /* Index pointer */
 
@@ -128,8 +69,13 @@ int CreateSubject(subject_t* subjectLL)
   return 0;
 }
 
-int CreateStudent(student_t* studentLL)
+int createStudent(student_t* studentLL, int privilege)
 {
+  if(privilege > 2){
+    printf("You do not have privileges for this function, speak ");
+    printf("to your admin\n");
+    return -1;
+  }
   student_t* ip;
   /* Index pointer */
 

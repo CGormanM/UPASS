@@ -45,9 +45,7 @@ do
   } while ( strcmp(passwordTest, password) != 0);
 
   /* Converts the password to the cipher */
-  printf("password: %s\n", password);
   strcpy(password, cipher(password));
-  printf("password: %s\n", password);
 
   /* Write to the database */
   fprintf(fp, "%d\t", ID);

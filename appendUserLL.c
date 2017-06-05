@@ -1,7 +1,13 @@
 #include "UPASS.h"
 
-int appendUserLL(user_t* userLL)
+int appendUserLL(user_t* userLL, int privilege)
 {
+
+  if(privilege > 2){
+    printf("You do not have privileges for this function, speak ");
+    printf("to your admin\n");
+    return -1;
+  }
   /* Open the database so you can save it as you go */
   FILE* fp;
   fp = fopen(USER_DATABASE, "a");

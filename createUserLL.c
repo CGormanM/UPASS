@@ -1,7 +1,5 @@
 #include "UPASS.h"
 
-#define DEBUG
-
 user_t* createUserLL(void)
 {
   FILE* fp;

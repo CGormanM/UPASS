@@ -169,7 +169,6 @@ void createSubjects(subject_t* root){
 		fscanf(database, "%*[\n]");
 
 		stuIp = ip->studentsLL;
-		printf("Temp: %d\n", temp);
 		for(i = 0; i < temp; i++){
 		    fscanf(database, "%d", &stuIp->ID);
 		    fscanf(database, "%*[\n]");

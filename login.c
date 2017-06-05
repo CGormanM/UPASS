@@ -1,6 +1,13 @@
 #include "UPASS.h"
+#include "createUserLL.c"
 #include "createUser.c"
 #include "readUserDatabase.c"
+
+/*
+Returns 0 if unsuccesful
+Returns student ID if successful
+Returns -1 if person using the program wants to exit
+*/
 
 int login(void)
 {
@@ -18,24 +25,30 @@ int login(void)
     createUser();
     printf("Now, please login.\n");
   }
-  fclose(fp);
 
+  #ifdef DEBUG
+  printf("Test\n");
+  #endif
 
   int i = 100; /* Input */
   int enteredID;
   char enteredPswrd[MAX_PASSWORD_LENGTH];
 
+  printf("\nATTENTION:\n"
+        "Enter -1 for User ID to exit.\n"
+        "Typed password will appear on-screen.\n");
 
-  while ( i != 0)
+  while ( 1 > 0 )
   {
     /* intakes either the user ID or -1 */
-    printf("Enter user ID or enter 0 to exit: ");
+    printf("\n\t--LOGIN--\n"
+          "\tUser ID: ");
     scanf("%d", &i);
 
     /* Exit program if input was -1 */
-    if (i == 0)
+    if (i == -1)
     {
-      return 0;
+      return -1;
     }
     else
     {
@@ -43,8 +56,19 @@ int login(void)
 
       /* Set the input as ID  */
       enteredID = i;
-      printf("Enter your password (note, it will appear on-screen): ");
+      printf(
+              "\tPassword: ");
       scanf("%s", enteredPswrd);
+
+      #ifdef DEBUG
+      printf("Entered Password: %s\nString returned from cipher: %s\n", enteredPswrd, cipher(enteredPswrd));
+      #endif
+
+      strcpy(enteredPswrd, cipher(enteredPswrd));
+
+      #ifdef DEBUG
+      printf("Entered Password: %s\n", enteredPswrd);
+      #endif
 
       r = readUserDatabase(enteredID, enteredPswrd);
 
@@ -55,13 +79,15 @@ int login(void)
         or password was incorrect
         */
         printf("User ID or incorrect password, please try again.\n");
+        return 0;
       }
 
 
       if (r == 1)
       {
         /* Successful login */
-        printf("Successful login.\n"); /* We can remove this print statement */
+        printf("\n\nSuccessful login.\n"); /* We can remove this print statement */
+        createUserLL();
         return enteredID;
       }
     }

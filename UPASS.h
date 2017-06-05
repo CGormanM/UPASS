@@ -12,7 +12,7 @@ Header Files
 Preprocessing directives
 *******************************************************************************/
 /*TODO - Change based on requirements*/
-#define MAX_PASSWORD_LENGTH 16
+#define MAX_PASSWORD_LENGTH 70
 #define MAX_NAME_LENGTH 64
 /*12 Sessions per week, 13 week*/
 #define MAX_SESSIONS 156
@@ -24,7 +24,6 @@ Preprocessing directives
 #define SUBJECT_DATABASE "subjects.txt"
 #define NEW_STUDENT_CSV "students.txt"
 
-#define DEBUG
 
 /*#define DEBUG*/
 
@@ -47,7 +46,7 @@ typedef struct student student_t;
 struct user{
   int ID;
   char name[MAX_NAME_LENGTH];
-  char password[MAX_PASSWORD_LENGTH];
+  char password[3*MAX_PASSWORD_LENGTH];
   int privilege;
   struct user* next;
 };
@@ -81,25 +80,35 @@ void printSessions(long sessions[], int sessionsAmt);
 void printUsers(user_t* root);
 void printStudents(student_t* root);
 long concatenate(long x, long y);
-void addSession(subject_t* subject);
-void removeSession(subject_t* subject);
-void allocateTutor(subject_t* subject, user_t* usersLL);
-void removeTutor(subject_t* subject, user_t* root);
-void updatePrivilege(user_t* user);
-int CreateUser(user_t* userLL);
-int CreateSubject(subject_t* subjectLL);
-int CreateStudent(student_t* studentLL);
+void addSession(subject_t* subject, int privilege);
+void removeSession(subject_t* subject, int privilege);
+void allocateTutor(subject_t* subject, user_t* usersLL, int privilege);
+void removeTutor(subject_t* subject, user_t* root, int privilege);
+void updatePrivilege(user_t* user, int privilege);
+int createSubject(subject_t* subjectLL, int privilege);
+int createStudent(student_t* studentLL, int privilege);
 void printUsersByID(user_t* root, int IDs[], int IDamt);
 void printUserSubjects(subject_t* root, int userID);
-void allocateStudent(subject_t* subject, student_t* studentsLL);
+void allocateStudent(subject_t* subject, student_t* studentsLL
+  , int privilege);
 void printStudentSubjects(subject_t* subjectsLL, int ID);
-void markSession(student_t* studentsLL, student_t* studentsDB, long session);
+void markSession(student_t* studentsLL, student_t* studentsDB, long session
+  , int privilege);
 void printStudentsBySession(student_t* student, long session);
-void removeStudent(subject_t* subject);
+void removeStudent(subject_t* subject, int privilege);
+
+int appendUserLL(user_t* userLL, int privilege);
+char *cipher(char str[]);
+int login(void);
+user_t* createCurrentUser(int userID);;
+int createUser(void);
+user_t* createUserLL(void);
+int readUserDatabase(int userID, char cipherPassword[]);
 
 void createStudents(student_t* root);
 void saveStudents(student_t* root);
 void saveSubjects(subject_t* root);
 void createSubjects(subject_t* root);
+
 
 #endif
